@@ -27,19 +27,43 @@ galleryEl.insertAdjacentHTML('beforeend', galleryItemsMarkup);
 galleryEl.addEventListener('click', onClickGalleryItem);
 
 function onClickGalleryItem(event) {
-  event.preventDefault();
-
-  const srcImg = event.target.dataset.source;
-
   if (event.target.nodeName !== 'IMG') {
     return;
   }
+  event.preventDefault();
 
-  modal.show(srcImg);
+  const imgSrc = event.target.dataset.source;
+
+  showModal(imgSrc);
 }
 
-console.log(galleryItemsMarkup);
+function showModal(imgSrc) {
+  const modal = basicLightbox.create(
+    `<img src="${imgSrc}" style="display:block; height: 100vh">`,
+  );
 
-const modal = basicLightbox.create(`
-    <img src="assets/images/image.png" width="800" height="600">
-`);
+  modal.show();
+
+  const isModalVisible = modal.visible();
+
+  if (isModalVisible) {
+    addEscListener();
+  } else {
+    removeEscListener();
+  }
+}
+
+function onEscClick(event) {
+  if (event.code === 'Escape') {
+    const modal = document.querySelector('.basicLightbox');
+    modal.remove();
+  }
+}
+
+function addEscListener() {
+  window.addEventListener('keydown', onEscClick);
+}
+
+function removeEscListener() {
+  window.removeEventListener('keydown', onEscClick);
+}
