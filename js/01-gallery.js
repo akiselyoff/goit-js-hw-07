@@ -38,32 +38,27 @@ function onClickGalleryItem(event) {
 }
 
 function showModal(imgSrc) {
-  const modal = basicLightbox.create(
+  const instance = basicLightbox.create(
     `<img src="${imgSrc}" style="display:block; height: 100vh">`,
   );
 
-  modal.show();
-
-  const isModalVisible = modal.visible();
-
-  if (isModalVisible) {
+  instance.show(() => {
     addEscListener();
-  } else {
-    removeEscListener();
+  });
+
+  function onEscClick(event) {
+    if (event.code === 'Escape') {
+      instance.close(() => {
+        removeEscListener();
+      });
+    }
   }
-}
 
-function onEscClick(event) {
-  if (event.code === 'Escape') {
-    const modal = document.querySelector('.basicLightbox');
-    modal.remove();
+  function addEscListener() {
+    window.addEventListener('keydown', onEscClick);
   }
-}
 
-function addEscListener() {
-  window.addEventListener('keydown', onEscClick);
-}
-
-function removeEscListener() {
-  window.removeEventListener('keydown', onEscClick);
+  function removeEscListener() {
+    window.removeEventListener('keydown', onEscClick);
+  }
 }
