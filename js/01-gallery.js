@@ -36,29 +36,29 @@ function onClickGalleryItem(event) {
 
   showModal(imgSrc);
 }
-
+let instance;
 function showModal(imgSrc) {
-  const instance = basicLightbox.create(
+  instance = basicLightbox.create(
     `<img src="${imgSrc}" style="display:block; height: 100vh">`,
   );
 
   instance.show(() => {
     addEscListener();
   });
+}
 
-  function onEscClick(event) {
-    if (event.code === 'Escape') {
-      instance.close(() => {
-        removeEscListener();
-      });
-    }
+function onEscClick(event) {
+  if (event.code === 'Escape') {
+    instance.close(() => {
+      removeEscListener();
+    });
   }
+}
 
-  function addEscListener() {
-    window.addEventListener('keydown', onEscClick);
-  }
+function addEscListener() {
+  window.addEventListener('keydown', onEscClick);
+}
 
-  function removeEscListener() {
-    window.removeEventListener('keydown', onEscClick);
-  }
+function removeEscListener() {
+  window.removeEventListener('keydown', onEscClick);
 }
